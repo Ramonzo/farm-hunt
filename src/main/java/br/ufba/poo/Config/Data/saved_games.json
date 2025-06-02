@@ -1,0 +1,10 @@
+{
+  "game_data": {
+    "saved_games": [
+      {
+        "name": "Save Game 1",
+        "generated_file": "/save1.json"
+      }
+    ]
+  }
+}

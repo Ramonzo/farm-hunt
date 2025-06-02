@@ -1,0 +1,13 @@
+{
+  "teste_numero" : 42,
+  "teste_string" : "Isso é um teste",
+  "player_teste" : {
+    "name" : "TestPlayer",
+    "level" : 1,
+    "config" : {
+      "soundEnabled" : true,
+      "resolution" : 1024
+    },
+    "inventory" : [ ]
+  }
+}
