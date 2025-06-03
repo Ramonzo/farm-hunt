@@ -72,8 +72,6 @@ public class Slider extends JPanel {
         int x = getWidth() / 2;
 
         roundedButton.setPosition(x, y);
-
-        // System.out.println("value: " + value + " | y:" + y);
     }
 
     public void load() {

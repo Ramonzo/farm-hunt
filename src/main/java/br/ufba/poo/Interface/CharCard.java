@@ -11,11 +11,11 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
+import br.ufba.poo.Config.SavedGame;
 import br.ufba.poo.Engine.Constants;
 import br.ufba.poo.Engine.Sprite;
 import br.ufba.poo.Engine.Transform2D;
 import br.ufba.poo.Engine.Vector2;
-import br.ufba.poo.Screens.SavedGame;
 
 public class CharCard extends JPanel {
     private Transform2D transform2D;
@@ -56,7 +56,7 @@ public class CharCard extends JPanel {
         background = new Sprite(Constants.GUI_PATH + "/card_layout.png");
         charFrameSprite = new Sprite(Constants.GUI_PATH + "/square_layout.png");
 
-        enterButton = Screen.createSmallEnterButton("", new Vector2(0, 0), this::enterCallback);
+        enterButton = Screen.createSmallButton("start", new Vector2(0, 0), this::enterCallback);
 
         selectCharGroupSprites = new ArrayList<>();
         for (String charImage : Constants.SELECT_CHAR_GROUP) {
@@ -87,12 +87,12 @@ public class CharCard extends JPanel {
 
         charFrameSprite.load();
 
-        sliderVertical.setPosition((getWidth() / 2) + 50, (getHeight() / 2) + 10);
+        sliderVertical.setPosition((getWidth() / 2) + 50, (getHeight() / 2) + 5);
         sliderVertical.setMaxValue(selectCharGroupSprites.size() - 1);
 
         sliderVertical.load();
 
-        enterButton.setPosition(getWidth() / 2, getHeight() - 30);
+        enterButton.setPosition(getWidth() / 2, getHeight() - 40);
 
         for (Sprite sprite : selectCharGroupSprites) {
             sprite.load();
@@ -148,7 +148,7 @@ public class CharCard extends JPanel {
             g.drawImage(charFrameImage, (getWidth() / 2) - 60, (getHeight() / 2) - 35, charFrameImage.getWidth() * 3,
                     charFrameImage.getHeight() * 3, null);
         }
-
+        
         if (selectCharGroupSprites.size() > 0) {
             Sprite sprite = selectCharGroupSprites.get(sliderValue);
             BufferedImage spriteImage = sprite.getImage();

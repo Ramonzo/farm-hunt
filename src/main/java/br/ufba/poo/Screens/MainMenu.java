@@ -21,9 +21,9 @@ public class MainMenu extends Screen {
 
         int buttonDistance = 75;
         Button btnStart = Screen.createMenuButton("Start", new Vector2(buttonsX, 300), this::startGame);
-        Button btnSettings = Screen.createMenuButton("Configurações", new Vector2(buttonsX, 300 + buttonDistance),
+        Button btnSettings = Screen.createMenuButton("Configuration", new Vector2(buttonsX, 300 + buttonDistance),
                 this::openSettings);
-        Button btnExit = Screen.createMenuButton("Sair", new Vector2(buttonsX, 300 + (buttonDistance * 2)), this::exitGame);
+        Button btnExit = Screen.createMenuButton("Exit", new Vector2(buttonsX, 300 + (buttonDistance * 2)), this::exitGame);
 
         add(logo, gbc);
 
@@ -38,7 +38,6 @@ public class MainMenu extends Screen {
     }
 
     private void startGame() {
-        System.out.println("Iniciando jogo...");
         router.goTo("/select_char");
     }
 
@@ -47,7 +46,6 @@ public class MainMenu extends Screen {
     }
 
     private void exitGame() {
-        System.out.println("Saindo...");
         System.exit(0);
     }
 }

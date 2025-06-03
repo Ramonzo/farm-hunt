@@ -14,10 +14,12 @@ public class Button extends JComponent {
 
     private BufferedImage currentImage;
 
+    private CustomText cardText;
     private String text;
     private boolean hovering = false;
     private boolean clicking = false;
     private Runnable callback;
+    private Graphics2D g2d;
 
     public Button(String basePath, String hoverPath, String clickPath) {
         buttonSprite = new ButtonSprite(basePath, hoverPath, clickPath);
@@ -32,6 +34,11 @@ public class Button extends JComponent {
     public void load() {
         buttonSprite.load();
         currentImage = buttonSprite.getSpriteAction(ButtonSprite.BASE_IMAGE_HASH);
+
+        cardText.load();
+        cardText.setPosition(0, 0);
+
+        add(cardText, g2d);
 
         setupListeners();
         updateComponent();
@@ -90,6 +97,10 @@ public class Button extends JComponent {
 
     public void setText(String text) {
         this.text = text;
+        cardText = new CustomText(text);
+
+        load();
+
         repaint();
     }
 
@@ -99,13 +110,10 @@ public class Button extends JComponent {
 
     private void updateComponent() {
         if (currentImage != null) {
-            int width = (int) (currentImage.getWidth() * this.transform2D.scale.x);
-            int height = (int) (currentImage.getHeight() * this.transform2D.scale.y);
+            setPreferredSize(new Dimension(getWidth(), getHeight()));
 
-            setPreferredSize(new Dimension(width, height));
-
-            this.setBounds((int) (this.transform2D.position.x - (width / 2)),
-                    (int) (this.transform2D.position.y - (height / 2)), width, height);
+            this.setBounds((int) (this.transform2D.position.x - (getWidth() / 2)),
+                    (int) (this.transform2D.position.y - (getHeight() / 2)), getWidth(), getHeight());
         }
 
         revalidate();
@@ -113,9 +121,25 @@ public class Button extends JComponent {
     }
 
     @Override
+    public int getWidth() {
+        int padding = 0;
+        int width = (int) (currentImage.getWidth() * this.transform2D.scale.x);
+
+        if (width < cardText.getWidth())
+            padding = cardText.getWidth() - width;
+
+        return width + padding;
+    }
+
+    @Override
+    public int getHeight() {
+        return (int) (currentImage.getHeight() * this.transform2D.scale.y);
+    }
+
+    @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        Graphics2D g2d = (Graphics2D) g.create();
+        g2d = (Graphics2D) g.create();
 
         currentImage = buttonSprite.getSpriteAction(ButtonSprite.BASE_IMAGE_HASH);
 
@@ -129,17 +153,6 @@ public class Button extends JComponent {
 
             g2d.drawImage(currentImage, 0, 0, getWidth(), getHeight(), null);
         }
-
-        // Desenha o texto centralizado
-        g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-        g2d.setFont(new Font("Arial", Font.BOLD, 14));
-        g2d.setColor(Color.WHITE);
-
-        FontMetrics fm = g2d.getFontMetrics();
-        int x = (getWidth() - fm.stringWidth(text)) / 2;
-        int y = ((getHeight() - fm.getHeight()) / 2) + fm.getAscent();
-
-        g2d.drawString(text, x, y);
 
         g2d.dispose();
     }

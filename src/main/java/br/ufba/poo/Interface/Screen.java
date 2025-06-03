@@ -37,11 +37,11 @@ public class Screen extends JPanel {
         return btn;
     }
 
-    public static Button createSmallBackButton(String text, Vector2 position, Runnable callback) {
+    public static Button createMediumButton(String text, Vector2 position, Runnable callback) {
         Button btn = createButton(text, new Vector2(position), new Vector2(3f, 3f), callback,
-                "/button_back_small_base.png",
-                "/button_back_small_hover.png",
-                "/button_back_small_click.png");
+                "/button_small_base.png",
+                "/button_small_hover.png",
+                "/button_small_click.png");
 
         return btn;
     }
@@ -51,15 +51,6 @@ public class Screen extends JPanel {
                 "/button_small_base.png",
                 "/button_small_hover.png",
                 "/button_small_click.png");
-
-        return btn;
-    }
-
-    public static Button createSmallEnterButton(String text, Vector2 position, Runnable callback) {
-        Button btn = createButton(text, new Vector2(position), new Vector2(2f, 2f), callback,
-                "/button_enter_small_base.png",
-                "/button_enter_small_hover.png",
-                "/button_enter_small_click.png");
 
         return btn;
     }

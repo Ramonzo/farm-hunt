@@ -1,4 +1,4 @@
-package br.ufba.poo.Screens;
+package br.ufba.poo.Config;
 
 import java.util.List;
 

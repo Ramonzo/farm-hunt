@@ -51,9 +51,6 @@ public class CustomText extends JPanel {
         updateComponent();
     }
 
-    public void text(String text) {
-    }
-
     public void setPosition(int x, int y) {
         Vector2 position = new Vector2(x, y);
         Vector2 scale = new Vector2(this.transform2D.scale);
@@ -64,12 +61,12 @@ public class CustomText extends JPanel {
 
     @Override
     public int getWidth() {
-        return (int) ((16 * text.length()) * this.transform2D.scale.x);
+        return (int) ((6 * text.length()) * this.transform2D.scale.x);
     }
 
     @Override
     public int getHeight() {
-        return (int) ((16 * text.length()) * this.transform2D.scale.y);
+        return (int) ((6 * text.length()) * this.transform2D.scale.y);
     }
 
     private void updateComponent() {

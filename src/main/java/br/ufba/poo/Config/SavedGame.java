@@ -1,4 +1,4 @@
-package br.ufba.poo.Screens;
+package br.ufba.poo.Config;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
