@@ -1,10 +1,11 @@
 {
-  "game_data": {
-    "saved_games": [
-      {
-        "name": "Save Game 1",
-        "generated_file": "/save1.json"
-      }
-    ]
+  "game_data" : {
+    "savedGames" : [ {
+      "name" : "Save Game 1",
+      "generated_file" : "/save1.json"
+    }, {
+      "name" : "Save Game 2",
+      "generated_file" : "/save2.json"
+    } ]
   }
 }

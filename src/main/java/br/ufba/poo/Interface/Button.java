@@ -21,6 +21,8 @@ public class Button extends JComponent {
     private Runnable callback;
     private Graphics2D g2d;
 
+    private boolean await = false;
+
     public Button(String basePath, String hoverPath, String clickPath) {
         buttonSprite = new ButtonSprite(basePath, hoverPath, clickPath);
 
@@ -64,8 +66,10 @@ public class Button extends JComponent {
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (callback != null)
+                if (callback != null && !await) {
+                    await = true;
                     callback.run();
+                }
             }
 
             @Override
@@ -77,6 +81,7 @@ public class Button extends JComponent {
             @Override
             public void mouseReleased(MouseEvent e) {
                 clicking = false;
+                await = false;
                 repaint();
             }
 
@@ -90,6 +95,7 @@ public class Button extends JComponent {
             public void mouseExited(MouseEvent e) {
                 hovering = false;
                 clicking = false;
+                await = false;
                 repaint();
             }
         });

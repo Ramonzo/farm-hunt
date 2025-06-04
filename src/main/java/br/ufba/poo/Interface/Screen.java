@@ -37,6 +37,15 @@ public class Screen extends JPanel {
         return btn;
     }
 
+    public static Button createPlusButton(Vector2 position, Runnable callback) {
+        Button btn = createButton("", new Vector2(position), new Vector2(2f, 2f), callback,
+                "/plus_button_base.png",
+                "/plus_button_hover.png",
+                "/plus_button_click.png");
+
+        return btn;
+    }
+
     public static Button createMediumButton(String text, Vector2 position, Runnable callback) {
         Button btn = createButton(text, new Vector2(position), new Vector2(3f, 3f), callback,
                 "/button_small_base.png",

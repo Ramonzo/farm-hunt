@@ -19,7 +19,7 @@ import java.util.Map;
 public class JsonDataManager {
     private final File dataFile;
     private final ObjectMapper objectMapper;
-    private Map<String, Object> dataMap;
+    private final Map<String, Object> dataMap;
     private final String filePath;
 
     public JsonDataManager(String filePath) {
@@ -67,19 +67,16 @@ public class JsonDataManager {
     }
 
     private void saveData() {
-
         try {
-            // Garantir que o diretório existe
             File parentDir = dataFile.getParentFile();
             if (parentDir != null && !parentDir.exists()) {
                 if (!parentDir.mkdirs()) {
                     System.err.println("Falha ao criar diretório: " + parentDir.getAbsolutePath());
                 }
             }
-
+            
             objectMapper.writeValue(dataFile, dataMap);
 
-            // Verificação extra
             if (!dataFile.exists()) {
                 System.err.println("ERRO: Arquivo não foi criado após salvamento!");
             }

@@ -23,7 +23,11 @@ public class Constants {
     public static final List<String> SELECT_CHAR_GROUP = Arrays.asList("/select_char_group1.png",
             "/select_char_group2.png", "/select_char_group3.png", "/select_char_group4.png", "/select_char_group5.png",
             "/select_char_group6.png", "/select_char_group7.png", "/select_char_group8.png", "/select_char_group9.png",
-            "/select_char_group10.png", "/select_char_group11.png", "/select_char_group12.png", "/select_char_group13.png",
-            "/select_char_group14.png", "/select_char_group15.png", "/select_char_group16.png", "/select_char_group17.png",
+            "/select_char_group10.png", "/select_char_group11.png", "/select_char_group12.png",
+            "/select_char_group13.png",
+            "/select_char_group14.png", "/select_char_group15.png", "/select_char_group16.png",
+            "/select_char_group17.png",
             "/select_char_group18.png", "/select_char_group19.png", "/select_char_group20.png");
+
+    public static final int MAX_SAVED_GAMES = 3;
 }

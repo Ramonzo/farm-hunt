@@ -5,23 +5,18 @@ import java.util.List;
 
 import br.ufba.poo.Config.SavedGame;
 import br.ufba.poo.Config.SavedGames;
-import br.ufba.poo.Config.General.JsonDataManager;
 import br.ufba.poo.Engine.Constants;
+import br.ufba.poo.Engine.ManageGameData;
 import br.ufba.poo.Engine.Vector2;
 import br.ufba.poo.Interface.*;
 
 public class SelectChar extends Screen {
     private List<CharCard> selectCharCards;
-    private JsonDataManager manager;
-    private List<SavedGame> saveGames;
+    private SavedGames loaded;
 
     public SelectChar() {
 
-        manager = new JsonDataManager("/saved_games.json");
-
-        SavedGames loaded = manager.get("game_data", SavedGames.class);
-
-        saveGames = loaded.getSavedGames();
+        loaded = ManageGameData.getSavedGames();
 
         selectCharCards = new ArrayList<>();
 
@@ -30,37 +25,48 @@ public class SelectChar extends Screen {
 
     public void update() {
         if (selectCharCards != null)
-            if (saveGames != null) {
-                for (CharCard selectCharCard : selectCharCards) {
-                    selectCharCard.update();
-                }
+            for (CharCard selectCharCard : selectCharCards) {
+                selectCharCard.update();
             }
     }
 
     protected void setupUI() {
         super.setupUI();
 
-        Button btnBack = Screen.createMediumButton("back", new Vector2(100, Constants.SCREEN_HEIGHT - 100), this::back);
+        Button btnBack = Screen.createMediumButton("back", new Vector2(70, Constants.SCREEN_HEIGHT - 100), this::back);
 
-        if (saveGames != null) {
-            int i = 0;
-            for (SavedGame savedGame : saveGames) {
+        if (loaded != null) {
+            for (SavedGame savedGame : loaded.getSavedGames()) {
                 CharCard selectCharCard = new CharCard(savedGame);
-                selectCharCard.setPosition(300 + (200 * i), Constants.SCREEN_HEIGHT - 300);
+                selectCharCard.setPosition(270 + (200 * selectCharCards.size()), Constants.SCREEN_HEIGHT - 300);
                 selectCharCard.load();
                 selectCharCards.add(selectCharCard);
 
                 add(selectCharCard, gbc);
-                
-                i++;
             }
 
-            if (saveGames.size() > 1) {
+            if (selectCharCards.size() < Constants.MAX_SAVED_GAMES) {
+                Button btnPlus = Screen.createPlusButton(
+                        new Vector2(250 + (200 * selectCharCards.size()), Constants.SCREEN_HEIGHT - 300),
+                        this::createNewGame);
 
+                add(btnPlus, gbc);
             }
         }
 
         add(btnBack, gbc);
+    }
+
+    private void createNewGame() {
+        SavedGame newSavedGame = new SavedGame("Save Game " + (selectCharCards.size() + 1),
+                "/save" + (selectCharCards.size() + 1) + ".json");
+
+        ManageGameData.generateNewSavedGame(newSavedGame);
+        loaded = ManageGameData.getSavedGames();
+        selectCharCards = new ArrayList<>();
+
+        removeAll();
+        setupUI();
     }
 
     private void back() {
