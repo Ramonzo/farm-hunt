@@ -40,6 +40,7 @@ public class SelectChar extends Screen {
                 CharCard selectCharCard = new CharCard(savedGame);
                 selectCharCard.setPosition(270 + (200 * selectCharCards.size()), Constants.SCREEN_HEIGHT - 300);
                 selectCharCard.load();
+                
                 selectCharCards.add(selectCharCard);
 
                 add(selectCharCard, gbc);

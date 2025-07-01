@@ -62,7 +62,7 @@ public class GameWindow extends Canvas implements Runnable {
                 changeRoute(screen, selectChar::update);
             });
 
-            router.goTo("/select_char");
+            router.goTo("/main_menu");
         });
     }
 
