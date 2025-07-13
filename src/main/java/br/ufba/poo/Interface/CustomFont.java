@@ -19,8 +19,8 @@ public class CustomFont extends JPanel {
     private Transform2D transform2D;
     private GridBagConstraints gbc;
 
-    private static Sprite sprite;
-    private static BufferedImage spriteImage;
+    private Sprite sprite;
+    private BufferedImage spriteImage;
 
     private Character text;
 
@@ -40,11 +40,17 @@ public class CustomFont extends JPanel {
         gbc.insets = new Insets(0, 0, 0, 0);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        sprite = new Sprite(Constants.GUI_PATH + "/font.png");
+        sprite = new Sprite(Constants.GUI_PATH + "/font_normal.png");
 
         loadFontPositions();
 
         setPreferredSize(new Dimension(32, 32));
+    }
+
+    public CustomFont(String color) {
+        this();
+
+        sprite = new Sprite(Constants.GUI_PATH + "/font_" + color + ".png");
     }
 
     public void text(Character text) {
@@ -96,7 +102,7 @@ public class CustomFont extends JPanel {
 
         if (spriteImage != null) {
             Vector2 letterPosition = letterPositions.get(text);
-            
+
             if (letterPosition == null)
                 letterPosition = letterPositions.get('?');
 

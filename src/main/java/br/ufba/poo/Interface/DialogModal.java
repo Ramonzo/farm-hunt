@@ -14,7 +14,7 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.image.BufferedImage;
 
-public class ModalMessage extends JPanel {
+public class DialogModal extends JPanel {
     private Transform2D transform2D;
     protected GridBagConstraints gbc;
 
@@ -35,15 +35,14 @@ public class ModalMessage extends JPanel {
     private Sprite modalTR;
 
     private Sprite modalBG;
+    private Sprite modalTopDetail;
 
-    private Button okButton;
-    private Button cancelButton;
     private CustomText modalText;
 
     private int width = 350;
     private int height = 250;
 
-    public ModalMessage(String message) {
+    public DialogModal(String message) {
         setOpaque(false);
         setLayout(null);
         setBackground(new Color(30, 30, 30));
@@ -58,31 +57,25 @@ public class ModalMessage extends JPanel {
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
         modalText = new CustomText(message, "black");
-        okButton = Screen.createSmallButton("okay", new Vector2(0, 0), this::ok);
 
         modalSprite = new Sprite(Constants.GUI_PATH + "/modal/modal.png");
 
-        modalVL = new Sprite(Constants.GUI_PATH + "/modal/modal_vl.png");
-        modalVR = new Sprite(Constants.GUI_PATH + "/modal/modal_vr.png");
-        modalHT = new Sprite(Constants.GUI_PATH + "/modal/modal_ht.png");
-        modalHB = new Sprite(Constants.GUI_PATH + "/modal/modal_hb.png");
+        modalVL = new Sprite(Constants.GUI_PATH + "/dialog_modal/dialog_modal_vl.png");
+        modalVR = new Sprite(Constants.GUI_PATH + "/dialog_modal/dialog_modal_vr.png");
+        modalHT = new Sprite(Constants.GUI_PATH + "/dialog_modal/dialog_modal_ht.png");
+        modalHB = new Sprite(Constants.GUI_PATH + "/dialog_modal/dialog_modal_hb.png");
 
-        modalBL = new Sprite(Constants.GUI_PATH + "/modal/modal_bl.png");
-        modalBR = new Sprite(Constants.GUI_PATH + "/modal/modal_br.png");
-        modalTL = new Sprite(Constants.GUI_PATH + "/modal/modal_tl.png");
-        modalTR = new Sprite(Constants.GUI_PATH + "/modal/modal_tr.png");
+        modalBL = new Sprite(Constants.GUI_PATH + "/dialog_modal/dialog_modal_bl.png");
+        modalBR = new Sprite(Constants.GUI_PATH + "/dialog_modal/dialog_modal_br.png");
+        modalTL = new Sprite(Constants.GUI_PATH + "/dialog_modal/dialog_modal_tl.png");
+        modalTR = new Sprite(Constants.GUI_PATH + "/dialog_modal/dialog_modal_tr.png");
 
-        modalBG = new Sprite(Constants.GUI_PATH + "/modal/modal_bg.png");
+        modalBG = new Sprite(Constants.GUI_PATH + "/dialog_modal/dialog_modal_bg.png");
+        modalTopDetail = new Sprite(Constants.GUI_PATH + "/dialog_modal/dialog_modal_t_detail.png");
 
         this.message = message;
 
         setPreferredSize(new Dimension((int) (transform2D.scale.x * 5), (int) (transform2D.scale.y * 5)));
-    }
-
-    public ModalMessage(String message, ModalBooleanCallback callback) {
-        this(message);
-        this.callback = callback;
-        cancelButton = Screen.createSmallButton("cancel", new Vector2(0, 0), this::cancel);
     }
 
     public void load() {
@@ -102,19 +95,9 @@ public class ModalMessage extends JPanel {
         modalTR.load();
 
         modalBG.load();
+        modalTopDetail.load();
 
         modalSpriteImage = modalSprite.getImage();
-
-        if (callback != null) {
-            okButton.setPosition(getWidth() - (getWidth() / 3), getHeight() - 45);
-            cancelButton.setPosition(getWidth() / 3, getHeight() - 45);
-
-            add(cancelButton, gbc);
-        } else {
-            okButton.setPosition(getWidth() / 2, getHeight() - 55);
-        }
-
-        add(okButton, gbc);
         add(modalText, gbc, 0);
 
         updateComponent();
@@ -170,7 +153,7 @@ public class ModalMessage extends JPanel {
         g.setColor(getBackground());
 
         if (modalBG != null) {
-            g.drawImage(modalBG.getImage(), 15, 15, getWidth() - 50, getHeight() - 30, null);
+            g.drawImage(modalBG.getImage(), 15, 15, getWidth() - 30, getHeight() - 30, null);
         }
 
         int borderWidth = (getWidth() - 65) / 5;
@@ -178,7 +161,7 @@ public class ModalMessage extends JPanel {
 
         for (int i = 0; i < borderWidth; i++) {
             if (modalHT != null) {
-                g.drawImage(modalHT.getImage(), -15 + (i * 5), -30, 80, 80, null);
+                g.drawImage(modalHT.getImage(), -15 + (i * 5), -25, 80, 80, null);
             }
             if (modalHB != null) {
                 g.drawImage(modalHB.getImage(), -15 + (i * 5), getHeight() - 45, 80, 80, null);
@@ -187,27 +170,31 @@ public class ModalMessage extends JPanel {
 
         for (int i = 0; i < borderHeight; i++) {
             if (modalVL != null) {
-                g.drawImage(modalVL.getImage(), -30, -16 + (i * 5), 80, 80, null);
+                g.drawImage(modalVL.getImage(), -30, (i * 5), 80, 80, null);
             }
             if (modalVR != null) {
-                g.drawImage(modalVR.getImage(), getWidth() - 70, -16 + (i * 5), 80, 80, null);
+                g.drawImage(modalVR.getImage(), getWidth() - 45, (i * 5), 80, 80, null);
             }
         }
 
         if (modalTL != null) {
-            g.drawImage(modalTL.getImage(), -30, -30, 80, 80, null);
+            g.drawImage(modalTL.getImage(), 0, 0, 80, 80, null);
         }
 
         if (modalTR != null) {
-            g.drawImage(modalTR.getImage(), getWidth() - 70, -30, 80, 80, null);
+            g.drawImage(modalTR.getImage(), getWidth() - 75, 0, 80, 80, null);
         }
 
         if (modalBL != null) {
-            g.drawImage(modalBL.getImage(), -30, getHeight() - 50, 80, 80, null);
+            g.drawImage(modalBL.getImage(), 0, getHeight() - 75, 80, 80, null);
         }
 
         if (modalBR != null) {
-            g.drawImage(modalBR.getImage(), getWidth() - 70, getHeight() - 50, 80, 80, null);
+            g.drawImage(modalBR.getImage(), getWidth() - 75, getHeight() - 75, 80, 80, null);
+        }
+
+        if (modalTopDetail != null) {
+            g.drawImage(modalTopDetail.getImage(), (getWidth() / 3) + 20, -25, 80, 80, null);
         }
     }
 }

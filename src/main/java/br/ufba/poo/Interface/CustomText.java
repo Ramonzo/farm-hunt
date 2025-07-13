@@ -16,6 +16,7 @@ public class CustomText extends JPanel {
     private GridBagConstraints gbc;
 
     private String text;
+    private String text_color = "normal";
     private CustomFont font;
 
     public CustomText(String text) {
@@ -35,13 +36,16 @@ public class CustomText extends JPanel {
         this.text = text;
 
         setPreferredSize(new Dimension((int) (transform2D.scale.x * 5), (int) (transform2D.scale.y * 5)));
+    }
 
+    public CustomText(String text, String color) {
+        this(text);
+        this.text_color = color;
     }
 
     public void load() {
-
         for (int i = 0; i < text.length(); i++) {
-            font = new CustomFont();
+            font = new CustomFont(text_color);
             font.load();
             font.setPosition(i * 11, 0);
             font.text(text.charAt(i));
