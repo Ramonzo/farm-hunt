@@ -25,6 +25,10 @@ public class MainMenu extends Screen {
                 this::openSettings);
         Button btnExit = Screen.createMenuButton("Exit", new Vector2(buttonsX, 300 + (buttonDistance * 2)), this::exitGame);
 
+        ModalMessage modalA = new ModalMessage("Teste...");
+        modalA.load();
+        add(modalA, gbc);
+
         add(logo, gbc);
 
         add(btnStart, gbc);
