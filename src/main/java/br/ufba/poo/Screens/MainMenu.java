@@ -7,7 +7,9 @@ import br.ufba.poo.Interface.*;
 
 public class MainMenu extends Screen {
     private AnimatedSprite logo;
-    private DialogModal modalA;
+    private ModalMessage modalExit;
+
+    private InventoryModal modalTeste;
 
     private static final int buttonsX = Constants.SCREEN_HALF_WIDTH;
 
@@ -26,10 +28,13 @@ public class MainMenu extends Screen {
                 this::openSettings);
         Button btnExit = Screen.createMenuButton("Exit", new Vector2(buttonsX, 300 + (buttonDistance * 2)), this::openModal);
 
-        this.modalA = new DialogModal("Tem certeza que deseja sair?");
-        modalA.setWidth(400);
-        modalA.setHeight(100);
-        modalA.load();
+        this.modalExit = new ModalMessage("Sair do Jogo", "Tem certeza que deseja sair?", this::modalHandler);
+        
+        modalExit.load();
+
+        this.modalTeste = new InventoryModal();
+        modalTeste.load();
+        add(modalTeste, gbc, 0);
 
         add(logo, gbc);
 
@@ -48,11 +53,11 @@ public class MainMenu extends Screen {
     }
 
     private void openModal(){
-        add(modalA, gbc, 0);
+        add(modalExit, gbc, 0);
     }
 
     private void modalHandler(boolean isConfirmed){
-        if(!isConfirmed) remove(modalA);
+        if(!isConfirmed) remove(modalExit);
 
         if(isConfirmed) exitGame();
     }
