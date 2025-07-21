@@ -25,6 +25,7 @@ public class CustomFont extends JPanel {
     private Character text;
 
     private static HashMap<Character, Vector2> letterPositions;
+    public static int letterSize = 16;
 
     public CustomFont() {
         setOpaque(false);
@@ -79,12 +80,12 @@ public class CustomFont extends JPanel {
 
     @Override
     public int getWidth() {
-        return (int) (16 * this.transform2D.scale.x);
+        return (int) (letterSize * this.transform2D.scale.x);
     }
 
     @Override
     public int getHeight() {
-        return (int) (16 * this.transform2D.scale.y);
+        return (int) (letterSize * this.transform2D.scale.y);
     }
 
     public void setPosition(int x, int y) {

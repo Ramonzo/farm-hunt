@@ -36,9 +36,10 @@ public class Button extends JComponent {
     public void load() {
         buttonSprite.load();
         currentImage = buttonSprite.getSpriteAction(ButtonSprite.BASE_IMAGE_HASH);
-
+        
         cardText.load();
-        cardText.setPosition(0, 0);
+        cardText.setPosition((cardText.getWidth() / 15) + ((getWidth() / 3) - (cardText.getWidth() / 3)),
+                getHeight() / 10);
 
         add(cardText, g2d);
 

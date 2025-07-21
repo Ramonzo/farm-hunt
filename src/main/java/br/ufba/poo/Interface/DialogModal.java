@@ -13,36 +13,36 @@ import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 public class DialogModal extends JPanel {
     private Transform2D transform2D;
     protected GridBagConstraints gbc;
 
-    private String message;
     private ModalBooleanCallback callback;
 
-    private Sprite modalSprite;
-    private BufferedImage modalSpriteImage;
+    private static Sprite modalVL;
+    private static Sprite modalVR;
+    private static Sprite modalHT;
+    private static Sprite modalHB;
 
-    private Sprite modalVL;
-    private Sprite modalVR;
-    private Sprite modalHT;
-    private Sprite modalHB;
+    private static Sprite modalBL;
+    private static Sprite modalBR;
+    private static Sprite modalTL;
+    private static Sprite modalTR;
 
-    private Sprite modalBL;
-    private Sprite modalBR;
-    private Sprite modalTL;
-    private Sprite modalTR;
+    private static Sprite modalBG;
+    private static Sprite modalTopDetail;
 
-    private Sprite modalBG;
-    private Sprite modalTopDetail;
+    private CustomText title;
+    private String[] texts;
 
-    private CustomText modalText;
+    private static int width = 80;
+    private static int height = 80;
+    private static int textDistance = 20;
+    private int maxTextLength = 0;
 
-    private int width = 350;
-    private int height = 250;
-
-    public DialogModal(String message) {
+    public DialogModal(String title, String description) {
         setOpaque(false);
         setLayout(null);
         setBackground(new Color(30, 30, 30));
@@ -56,9 +56,8 @@ public class DialogModal extends JPanel {
         gbc.insets = new Insets(0, 0, 0, 0);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        modalText = new CustomText(message, "black");
-
-        modalSprite = new Sprite(Constants.GUI_PATH + "/modal/modal.png");
+        this.title = new CustomText(title, "black");
+        texts = description.split("</br>");
 
         modalVL = new Sprite(Constants.GUI_PATH + "/dialog_modal/dialog_modal_vl.png");
         modalVR = new Sprite(Constants.GUI_PATH + "/dialog_modal/dialog_modal_vr.png");
@@ -73,16 +72,22 @@ public class DialogModal extends JPanel {
         modalBG = new Sprite(Constants.GUI_PATH + "/dialog_modal/dialog_modal_bg.png");
         modalTopDetail = new Sprite(Constants.GUI_PATH + "/dialog_modal/dialog_modal_t_detail.png");
 
-        this.message = message;
-
         setPreferredSize(new Dimension((int) (transform2D.scale.x * 5), (int) (transform2D.scale.y * 5)));
     }
 
     public void load() {
-        modalText.load();
-        modalText.setPosition(20, 20);
+        title.load();
+        title.setPosition(20, 20);
 
-        modalSprite.load();
+        for (int i = 0; i < texts.length; i++) {
+            if (texts[i].length() > maxTextLength)
+                maxTextLength = texts[i].length();
+
+            CustomText newText = new CustomText(texts[i], "black");
+            newText.load();
+            newText.setPosition(20, (45) + (textDistance * i));
+            add(newText, gbc, 0);
+        }
 
         modalVL.load();
         modalVR.load();
@@ -97,8 +102,7 @@ public class DialogModal extends JPanel {
         modalBG.load();
         modalTopDetail.load();
 
-        modalSpriteImage = modalSprite.getImage();
-        add(modalText, gbc, 0);
+        add(title, gbc, 0);
 
         updateComponent();
     }
@@ -114,22 +118,22 @@ public class DialogModal extends JPanel {
         repaint();
     }
 
+    public void setPosition(int x, int y) {
+        Vector2 position = new Vector2(x, y);
+        Vector2 scale = new Vector2(this.transform2D.scale);
+        this.transform2D = new Transform2D(position, scale);
+
+        updateComponent();
+    }
+
     @Override
     public int getWidth() {
-        return width;
+        return width + CustomFont.letterSize * textDistance;
     }
 
     @Override
     public int getHeight() {
-        return height;
-    }
-
-    public void setWidth(int width) {
-        this.width = width;
-    }
-
-    public void setHeight(int height) {
-        this.height = height;
+        return height + (textDistance * texts.length);
     }
 
     public void cancel() {
