@@ -60,6 +60,10 @@ public class InventoryModal extends JPanel {
             createSlotLine();
         }
 
+        Item item = new Item();
+        slots.get(0).addItem(item);
+        slots.get(0).setHoverCallback(this::showItemModal);
+
         setPreferredSize(new Dimension((int) (transform2D.scale.x * 5), (int) (transform2D.scale.y * 5)));
     }
 
@@ -86,12 +90,6 @@ public class InventoryModal extends JPanel {
             ItemSlot newItemSlot = new ItemSlot();
             newItemSlot.setPosition(((newItemSlot.getWidth() - 2) * i) + x,
                     (newItemSlot.getHeight() * (slots.size() / INVENTORY_MAX_SLOT_LINE_LENGTH)) + y);
-
-            if (i == 0) {
-                Item item = new Item();
-                newItemSlot.addItem(item);
-                newItemSlot.setHoverCallback(this::showItemModal);
-            }
 
             slots.add(newItemSlot);
         }
