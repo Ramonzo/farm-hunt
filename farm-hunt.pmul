@@ -1,0 +1,238 @@
+@startuml
+
+' Pacotes principais
+package "Engine" {
+  class GameWindow {
+    - static JFrame frame
+    - static Router router
+    - static Runnable selectedUpdate
+    - volatile boolean running
+    - BufferStrategy strategy
+    + void start()
+    + void initGameResources()
+    - void changeRoute(JPanel, Runnable)
+    + void run()
+    - void update()
+    - void render()
+  }
+  class GameObject {
+    - SpriteRenderer spriteRenderer
+    - BoxCollider boxCollider
+    + GameObject()
+  }
+  class AnimatedSprite {
+    - Sprite sprite
+    - Transform2D transform2D
+    - BufferedImage currentImage
+    - Vector2 bounds
+    - int spritePos
+    - boolean loop
+    + AnimatedSprite(String, Vector2)
+    + void load()
+    + void update()
+    + void setPosition(int, int)
+    + void setScale(int, int)
+    - void updateComponent()
+    - int getFrameBound()
+    # void paintComponent(Graphics)
+  }
+  class Sprite {
+    - BufferedImage image
+    - String path
+    + Sprite(String)
+    + void load()
+    + BufferedImage getImage()
+  }
+  class BoxCollider {
+    ' (sem atributos ou métodos)
+  }
+  class Transform2D {
+    + final Vector2 position
+    + final Vector2 scale
+    + Transform2D(Vector2, Vector2)
+  }
+  class Vector2 {
+    + final float x
+    + final float y
+    + Vector2(float, float)
+    + Vector2(Vector2)
+    + double distance(Vector2)
+    + Vector2 add(Vector2)
+    + Vector2 subtract(Vector2)
+    + Vector2 multiply(float)
+    + float dotProduct(Vector2)
+    + double magnitude()
+    + float manhattanDistance(Vector2)
+    + boolean equals(Object)
+    + int hashCode()
+    + String toString()
+  }
+  class Constants {
+    + static final int SCREEN_WIDTH
+    + static final int SCREEN_HEIGHT
+    + static final int SCREEN_HALF_WIDTH
+    + static final int SCREEN_HALF_HEIGHT
+    + static final int UPS_TARGET
+    + static final long NANOSEGUNDOS_PER_UPDATE
+    + static final int FPS_TARGET
+    + static final long NANOSECONDS_PER_FRAME
+    + static final String USER_DIR
+    + static final String ASSET_PATH
+    + static final String DATA_PATH
+    + static final String GUI_PATH
+    + static final String CHARACTER_PATH
+    + static final List<String> SELECT_CHAR_GROUP
+    + static final int MAX_SAVED_GAMES
+  }
+  class ManageGameData {
+    - static SavedGames saved_games
+    - static final String GAME_DATA_KEY
+    - static final JsonDataManager manager
+    + static void generateNewSavedGame(SavedGame)
+    + static SavedGames getSavedGames()
+  }
+}
+
+package "Config" {
+  class SavedGame {
+    - String name
+    - String generatedFile
+    + SavedGame(String, String)
+    + String getName()
+    + void setName(String)
+    + String getGeneratedFile()
+    + void setGeneratedFile(String)
+    + boolean equals(Object)
+  }
+  class SavedGames {
+    - List<SavedGame> saved_games
+    + SavedGames(List<SavedGame>)
+    + List<SavedGame> getSavedGames()
+    + void setSavedGames(List<SavedGame>)
+    + void setSavedGame(SavedGame)
+    + void removeSavedGame(SavedGame)
+  }
+  class JsonDataManager {
+    - File dataFile
+    - ObjectMapper objectMapper
+    - Map<String, Object> dataMap
+    - String filePath
+    + JsonDataManager(String)
+    + void upsert(String, Object)
+    + <T> T get(String, Class<T>)
+    + <T> List<T> getList(String, Class<T>)
+    + <K,V> Map<K,V> getMap(String, Class<K>, Class<V>)
+    + void delete(String)
+    - Map<String, Object> loadData()
+    - void renameCorruptedFile()
+    - void saveData()
+  }
+}
+
+package "Interface" {
+  class Screen {
+    # static Router router
+    # GridBagConstraints gbc
+    + Screen()
+    + static AnimatedSprite createAnimatedLogo(Vector2, Vector2, Vector2)
+    + static Button createMenuButton(String, Vector2, Runnable)
+    + static Button createPlusButton(Vector2, Runnable)
+    + static Button createMediumButton(String, Vector2, Runnable)
+    + static Button createSmallButton(String, Vector2, Runnable)
+    + static Button createButton(String, Vector2, Vector2, Runnable, String, String, String)
+    # void setupUI()
+  }
+  class Button {
+    - ButtonSprite buttonSprite
+    - Transform2D transform2D
+    - BufferedImage currentImage
+    - CustomText cardText
+    - String text
+    - boolean hovering
+    - boolean clicking
+    - Runnable callback
+    - Graphics2D g2d
+    - boolean await
+    + Button(String, String, String)
+    + void load()
+    + void setPosition(int, int)
+    + void setScale(float, float)
+    - void setupListeners()
+    + void setText(String)
+    + void setCallback(Runnable)
+    - void updateComponent()
+    + int getWidth()
+    + int getHeight()
+    # void paintComponent(Graphics)
+  }
+  class Router {
+    - static Collection<Route> routes
+    - Route currentRoute
+    + Router()
+    + void createRoute(String, JPanel, RouteHandler)
+    + void goTo(String)
+    + Route getRoute()
+  }
+  class Route {
+    - String path
+    - JPanel screen
+    - RouteHandler callback
+    + Route(String, JPanel, RouteHandler)
+    + Route(Route)
+    + void setPath(String)
+    + String getPath()
+    + void setScreen(JPanel)
+    + JPanel getScreen()
+    + void execute()
+  }
+}
+
+package "Screens" {
+  class MainMenu {
+    - AnimatedSprite logo
+    - ModalMessage modalExit
+    - InventoryModal modalTeste
+    - static final int buttonsX
+    + MainMenu()
+    # void setupUI()
+    + void update()
+    - void startGame()
+    - void openModal()
+    - void modalHandler(boolean)
+    - void openSettings()
+    - void exitGame()
+  }
+  class Config {
+    - boolean soundEnabled
+    - int resolution
+    + Config(boolean, int)
+    + boolean isSoundEnabled()
+    + int getResolution()
+    + void setSoundEnabled(boolean)
+    + void setResolution(int)
+  }
+}
+
+' Herança
+MainMenu --|> Screen
+SelectChar --|> Screen
+
+' Composição/Associação
+GameWindow --> Router
+GameWindow --> MainMenu
+GameWindow --> SelectChar
+Screen --> Button
+Screen --> AnimatedSprite
+Button --> ButtonSprite
+Button --> CustomText
+Button --> Transform2D
+AnimatedSprite --> Sprite
+AnimatedSprite --> Transform2D
+AnimatedSprite --> Vector2
+CharCard --> SavedGame
+ManageGameData --> SavedGames
+ManageGameData --> JsonDataManager
+SavedGames --> SavedGame
+JsonDataManager --> Constants
+
+@enduml 
